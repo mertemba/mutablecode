@@ -9,62 +9,64 @@
 namespace MutableCode
 {
 
+	typedef std::list<char> CharList;
+	
 	class Tape
 	{
 	private:
-		std::list<char> data;
-		std::list<char>::iterator currentElement;
+		CharList data;
+		CharList::iterator current;
 		
 	public:
 		Tape()
 		{
 			data.push_front(0);
-			currentElement = data.begin();
+			current = data.begin();
 		}
 		
 		void moveRight()
 		{
-			if(currentElement != --data.end())
-				currentElement++;
+			if(current != --data.end())
+				current++;
 			else
 			{
 				data.push_back(0);
-				currentElement = --data.end();
+				current = --data.end();
 			}
 		}
 		
 		void moveLeft()
 		{
-			if(currentElement != data.begin())
-				currentElement--;
+			if(current != data.begin())
+				current--;
 			else
 			{
 				data.push_front(0);
-				currentElement = data.begin();
+				current = data.begin();
 			}
 		}
 		
 		void write(const char c)
 		{
-			*currentElement = c;
+			*current = c;
 		}
 		
 		char read() const
 		{
-			return *currentElement;
+			return *current;
 		}
 		
 		void clear()
 		{
 			data.clear();
 			data.push_front(0);
-			currentElement = data.begin();
+			current = data.begin();
 		}
 		
 		friend std::ostream& operator<<(std::ostream& s, const Tape& t)
 		{
 			s<<"<Tape:"<<std::endl;
-			for(auto it = t.data.begin(); it!=t.data.end(); it++){
+			for(CharList::const_iterator it = t.data.begin(); it!=t.data.end(); it++){
 				s<<"  "<<*it<<std::endl;
 			}
 			s<<">"<<std::endl;

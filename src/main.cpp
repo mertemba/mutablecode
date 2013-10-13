@@ -6,7 +6,8 @@
 using namespace MutableCode;
 using namespace std;
 
-int main(){
+int main()
+{
 	Tape tape;
 	tape.write('2');
 	tape.moveRight();

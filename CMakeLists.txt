@@ -7,11 +7,19 @@ set(PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 include_directories("${PROJECT_INCLUDE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
-SET(MutableCode_SOURCES ${PROJECT_SOURCE_DIR}/main.cpp)
-SET(MutableCode_HEADERS ${PROJECT_INCLUDE_DIR}/Tape.hpp)
+SET(SOURCES
+	${PROJECT_SOURCE_DIR}/main.cpp
+	${PROJECT_SOURCE_DIR}/Interpreter.cpp
+)
+SET(HEADERS
+	${PROJECT_INCLUDE_DIR}/Tape.hpp
+	${PROJECT_INCLUDE_DIR}/Program.hpp
+	${PROJECT_INCLUDE_DIR}/Interpreter.hpp
+	${PROJECT_INCLUDE_DIR}/Operation.hpp
+)
 
-ADD_EXECUTABLE(MutableCode ${MutableCode_SOURCES} ${MutableCode_HEADERS})
+ADD_EXECUTABLE(MutableCode ${SOURCES} ${HEADERS})
 
 #TARGET_LINK_LIBRARIES(MutableCode)
