@@ -7,28 +7,30 @@ namespace MutableCode
 
 	enum Move
 	{
-		left,
-		right,
-		none
+		gotoLeft,
+		gotoRight,
+		stay
 	};
 
 	class Operation
 	{
 	public:
 		Operation()
+			:Operation(0, 0, stay, 0, 0)
 		{
-			currentCondition = 0;
-			statusCondition = 0;
-			moveCommand = none;
-			currentWrite = 0;
-			statusWrite = 0;
+		}
+		
+		Operation(char curCond, char stateCond, Move move, char writeCur, char writeState)
+			:currentCondition(curCond), stateCondition(stateCond), moveCommand(move),
+			currentWrite(writeCur), stateWrite(writeState)
+		{
 		}
 		
 		//if 0, do not check
 		char currentCondition;
 		
 		//if 0, do not check
-		char statusCondition;
+		char stateCondition;
 		
 		Move moveCommand;
 		
@@ -36,7 +38,7 @@ namespace MutableCode
 		char currentWrite;
 		
 		//if 0, do not write
-		char statusWrite;
+		char stateWrite;
 	};
 
 }

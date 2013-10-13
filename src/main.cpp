@@ -1,5 +1,7 @@
 
 #include <Tape.hpp>
+#include <Program.hpp>
+#include <Operation.hpp>
 
 #include <iostream>
 
@@ -19,6 +21,11 @@ int main()
 	
 	//print '2', '?'
 	cout<<tape;
+	
+	Program program;
+	std::vector<Operation>* operations = program.getOperations();
+	operations->push_back(Operation(0, 0, stay, 1, 0));
+	program.run();
 	
 	return 0;
 }
