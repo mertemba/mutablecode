@@ -13,6 +13,7 @@ namespace MutableCode
 		
 	public:
 		Interpreter(Program* prog);
+                void execute();
 	};
 
 }
