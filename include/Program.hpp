@@ -64,6 +64,17 @@ namespace MutableCode
 		{
 			state = c;
 		}
+		
+		Tape* getTape()
+		{
+			return &tape;
+		}
+		
+		void dump()
+		{
+			std::cout<<"Program: state="<<(int)state<<std::endl;
+			std::cout<<"Tape="<<tape;
+		}
 	};
 
 }

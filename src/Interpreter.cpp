@@ -8,6 +8,7 @@ using namespace std;
 Interpreter::Interpreter(Program* prog)
 {
 	program = prog;
+	operations = NULL;
 	
 	if (program != NULL)
 	{
@@ -24,7 +25,7 @@ void Interpreter::doStep()
 {
 	bool currentMatch = false;
 	bool stateMatch = false;
-	bool anyMatch = false;
+	bool bothMatch = false;
 	Operation op;
 	for(std::vector<Operation>::iterator it = operations->begin(); it != operations->end(); it++)
 	{
@@ -37,9 +38,12 @@ void Interpreter::doStep()
 		{
 			stateMatch = true;
 		}
-		anyMatch = currentMatch || stateMatch;
-		if(anyMatch)
+		bothMatch = currentMatch && stateMatch;
+		if(bothMatch)
 		{
+			program->dump();
+			op.dump();
+			cout<<endl;
 			if(op.currentWrite != 0)
 			{
 				program->setCurrent(op.currentWrite);
@@ -48,10 +52,21 @@ void Interpreter::doStep()
 			{
 				program->setState(op.stateWrite);
 			}
+			switch(op.moveCommand)
+			{
+				case gotoLeft:
+					program->getTape()->moveLeft();
+					break;
+				case gotoRight:
+					program->getTape()->moveRight();
+					break;
+				default:
+					break;
+			}
 			break;
 		}
 	}
-	if(!anyMatch || isNop(op))
+	if(!bothMatch || isNop(op) || ++stepCounter>10)
 	{
 		program->setNotRunnable();
 	}
@@ -59,12 +74,13 @@ void Interpreter::doStep()
 
 bool Interpreter::isNop(Operation op)
 {
-	return (op.moveCommand == stay &&(op.currentWrite == 0 || op.currentWrite == program->getCurrent())
+	return (op.moveCommand == stay && (op.currentWrite == 0 || op.currentWrite == program->getCurrent())
 		&& (op.stateWrite == 0 || op.stateWrite == program->getState()));
 }
 
 void Interpreter::execute()
 {
+	stepCounter = 0;
 	while(program->getIsRunnable())
 	{
 		doStep();

@@ -24,8 +24,11 @@ int main()
 	
 	Program program;
 	std::vector<Operation>* operations = program.getOperations();
-	operations->push_back(Operation(0, 0, stay, 1, 0));
+	for(int i = 0; i<100; i++){
+		operations->push_back(Operation::randomOp());
+	}
 	program.run();
+	program.dump();
 	
 	return 0;
 }

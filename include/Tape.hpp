@@ -65,9 +65,9 @@ namespace MutableCode
 		
 		friend std::ostream& operator<<(std::ostream& s, const Tape& t)
 		{
-			s<<"<Tape:"<<std::endl;
+			s<<"<Tape:";
 			for(CharList::const_iterator it = t.data.begin(); it!=t.data.end(); it++){
-				s<<"  "<<*it<<std::endl;
+				s<<" "<<(int)*it;
 			}
 			s<<">"<<std::endl;
 			return s;

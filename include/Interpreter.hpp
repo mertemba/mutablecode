@@ -18,6 +18,8 @@ namespace MutableCode
 		
 		void doStep();
 		
+		int stepCounter;
+		
 	public:
 		Interpreter(Program* prog);
 		
