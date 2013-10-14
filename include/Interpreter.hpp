@@ -22,6 +22,8 @@ namespace MutableCode
 		Interpreter(Program* prog);
 		
 		bool isNop(Operation op);
+		
+		void execute();
 	};
 
 }

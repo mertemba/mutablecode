@@ -8,10 +8,15 @@ using namespace std;
 Interpreter::Interpreter(Program* prog)
 {
 	program = prog;
-	operations = program->getOperations();
-	while(program->getIsRunnable())
+	
+	if (program != NULL)
 	{
-		doStep();
+		operations = program->getOperations();
+		this->execute();
+	}
+	else
+	{
+		cout << "Empty program!" << endl;
 	}
 }
 
@@ -56,4 +61,12 @@ bool Interpreter::isNop(Operation op)
 {
 	return (op.moveCommand == stay &&(op.currentWrite == 0 || op.currentWrite == program->getCurrent())
 		&& (op.stateWrite == 0 || op.stateWrite == program->getState()));
+}
+
+void Interpreter::execute()
+{
+	while(program->getIsRunnable())
+	{
+		doStep();
+	}
 }
