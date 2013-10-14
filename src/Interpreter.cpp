@@ -23,12 +23,13 @@ Interpreter::Interpreter(Program* prog)
 
 void Interpreter::doStep()
 {
-	bool currentMatch = false;
-	bool stateMatch = false;
-	bool bothMatch = false;
+	program->dump();
+	bool allMatch = false;
 	Operation op;
 	for(std::vector<Operation>::iterator it = operations->begin(); it != operations->end(); it++)
 	{
+		bool currentMatch = false;
+		bool stateMatch = false;
 		op = *it;
 		if(op.currentCondition == 0 || op.currentCondition == program->getCurrent())
 		{
@@ -38,12 +39,11 @@ void Interpreter::doStep()
 		{
 			stateMatch = true;
 		}
-		bothMatch = currentMatch && stateMatch;
-		if(bothMatch)
+		allMatch = currentMatch && stateMatch && !isNop(op);
+		if(allMatch)
 		{
-			program->dump();
 			op.dump();
-			cout<<endl;
+			cout<<"match!\n"<<endl;
 			if(op.currentWrite != 0)
 			{
 				program->setCurrent(op.currentWrite);
@@ -52,22 +52,23 @@ void Interpreter::doStep()
 			{
 				program->setState(op.stateWrite);
 			}
-			switch(op.moveCommand)
-			{
-				case gotoLeft:
-					program->getTape()->moveLeft();
-					break;
-				case gotoRight:
-					program->getTape()->moveRight();
-					break;
-				default:
-					break;
-			}
+			program->move(op.moveCommand);
 			break;
 		}
 	}
-	if(!bothMatch || isNop(op) || ++stepCounter>10)
+	if(!allMatch)
 	{
+		cout<<"no match!\n"<<endl;
+		program->setNotRunnable();
+	}
+	else if(!program->popSystemChanged())
+	{
+		cout<<"no system change!\n"<<endl;
+		program->setNotRunnable();
+	}
+	else if(++stepCounter>10)
+	{
+		cout<<"enough steps done!\n"<<endl;
 		program->setNotRunnable();
 	}
 }

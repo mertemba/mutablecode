@@ -8,23 +8,26 @@
 using namespace MutableCode;
 using namespace std;
 
-int main()
-{
+void test(){
 	Tape tape;
-	tape.write('2');
+	tape.write(2);
 	tape.moveRight();
+	cout<<"input current tape value: ";
 	cin>>tape;
 	tape.moveLeft();
 	//read out '2'
 	char c = tape.read();
-	cout<<c<<endl;
-	
 	//print '2', '?'
-	cout<<tape;
-	
+	cout<<tape<<endl<<endl;
+}
+
+int main()
+{
 	Program program;
+	program.setState(BasicCharset[0]);
 	std::vector<Operation>* operations = program.getOperations();
-	for(int i = 0; i<100; i++){
+	for(int i = 0; i<1000; i++)
+	{
 		operations->push_back(Operation::randomOp());
 	}
 	program.run();

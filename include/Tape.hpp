@@ -6,10 +6,13 @@
 #include <iostream>
 #include <algorithm>
 
+#include <Operation.hpp>
+
 namespace MutableCode
 {
 
 	typedef std::list<char> CharList;
+	const char defaultTapeValue = BasicCharset[0];
 	
 	class Tape
 	{
@@ -20,7 +23,7 @@ namespace MutableCode
 	public:
 		Tape()
 		{
-			data.push_front(0);
+			data.push_front(defaultTapeValue);
 			current = data.begin();
 		}
 		
@@ -30,7 +33,7 @@ namespace MutableCode
 				current++;
 			else
 			{
-				data.push_back(0);
+				data.push_back(defaultTapeValue);
 				current = --data.end();
 			}
 		}
@@ -41,7 +44,7 @@ namespace MutableCode
 				current--;
 			else
 			{
-				data.push_front(0);
+				data.push_front(defaultTapeValue);
 				current = data.begin();
 			}
 		}
@@ -59,15 +62,21 @@ namespace MutableCode
 		void clear()
 		{
 			data.clear();
-			data.push_front(0);
+			data.push_front(defaultTapeValue);
 			current = data.begin();
 		}
 		
 		friend std::ostream& operator<<(std::ostream& s, const Tape& t)
 		{
 			s<<"<Tape:";
-			for(CharList::const_iterator it = t.data.begin(); it!=t.data.end(); it++){
-				s<<" "<<(int)*it;
+			for(CharList::const_iterator it = t.data.begin(); it!=t.data.end(); it++)
+			{
+				s<<" ";
+				if(it == t.current)
+					s<<"*";
+				s<<(int)*it;
+				if(it == t.current)
+					s<<"*";
 			}
 			s<<">"<<std::endl;
 			return s;
@@ -75,9 +84,9 @@ namespace MutableCode
 		
 		friend std::istream& operator>>(std::istream& s, Tape& t)
 		{
-			char c;
+			int c;
 			s>>c;
-			t.write(c);
+			t.write((char)c);
 			
 			return s;
 		}

@@ -40,18 +40,19 @@ namespace MutableCode
 			std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 			std::chrono::system_clock::duration timepoint = now.time_since_epoch();
 			std::default_random_engine generator(timepoint.count());
-			std::uniform_int_distribution<int> distribution(0, CharsetLength-1);
+			std::uniform_int_distribution<int> distribution(0, std::min(20, CharsetLength-1));
+			int divisor = 10;
 			
-			if(distribution(generator)>CharsetLength/4)
+			if(distribution(generator)>CharsetLength/divisor)
 				op.currentCondition = BasicCharset[distribution(generator)];
 			
-			if(distribution(generator)>CharsetLength/4 || op.currentCondition == 0)
+			if(distribution(generator)>CharsetLength/divisor || op.currentCondition == 0)
 				op.stateCondition = BasicCharset[distribution(generator)];
 			
-			if(distribution(generator)>CharsetLength/4)
+			if(distribution(generator)>CharsetLength/divisor)
 				op.currentWrite = BasicCharset[distribution(generator)];
 			
-			if(distribution(generator)>CharsetLength/4)
+			if(distribution(generator)>CharsetLength/divisor)
 				op.stateWrite = BasicCharset[distribution(generator)];
 			
 			int move = distribution(generator)%3;
@@ -87,7 +88,7 @@ namespace MutableCode
 		
 		void dump()
 		{
-			std::cout<<"Operation<"<<(int)currentCondition<<","<<(int)stateCondition<<","<<(int)currentWrite<<","<<(int)stateWrite<<",";
+			std::cout<<"<Operation: "<<(int)currentCondition<<","<<(int)stateCondition<<","<<(int)currentWrite<<","<<(int)stateWrite<<",";
 			switch(moveCommand)
 			{
 				case gotoLeft:

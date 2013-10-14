@@ -18,11 +18,11 @@ namespace MutableCode
 		char state;
 		std::vector<Operation> operations;
 		bool isRunnable;
+		bool systemChanged;
 		
 	public:
-		Program()
+		Program():tape(), state(0), operations(), isRunnable(true), systemChanged(false)
 		{
-			isRunnable = true;
 		}
 		
 		void run()
@@ -57,23 +57,50 @@ namespace MutableCode
 		
 		void setCurrent(char c)
 		{
-			tape.write(c);
+			if(c != tape.read())
+			{
+				tape.write(c);
+				systemChanged = true;
+			}
 		}
 		
 		void setState(char c)
 		{
-			state = c;
-		}
-		
-		Tape* getTape()
-		{
-			return &tape;
+			if(state != c)
+			{
+				state = c;
+				systemChanged = true;
+			}
 		}
 		
 		void dump()
 		{
 			std::cout<<"Program: state="<<(int)state<<std::endl;
 			std::cout<<"Tape="<<tape;
+		}
+		
+		bool popSystemChanged()
+		{
+			bool tmp = systemChanged;
+			systemChanged = false;
+			return tmp;
+		}
+		
+		void move(Move moveCommand)
+		{
+			switch(moveCommand)
+			{
+				case gotoLeft:
+					tape.moveLeft();
+					systemChanged = true;
+					break;
+				case gotoRight:
+					tape.moveRight();
+					systemChanged = true;
+					break;
+				default:
+					break;
+			}
 		}
 	};
 
