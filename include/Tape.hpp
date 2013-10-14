@@ -27,7 +27,7 @@ namespace MutableCode
 			current = data.begin();
 		}
 		
-		void moveRight()
+		inline void moveRight()
 		{
 			if(current != --data.end())
 				current++;
@@ -38,7 +38,7 @@ namespace MutableCode
 			}
 		}
 		
-		void moveLeft()
+		inline void moveLeft()
 		{
 			if(current != data.begin())
 				current--;
@@ -49,17 +49,17 @@ namespace MutableCode
 			}
 		}
 		
-		void write(const char c)
+		inline void write(const char c)
 		{
 			*current = c;
 		}
 		
-		char read() const
+		inline char read() const
 		{
 			return *current;
 		}
 		
-		void clear()
+		inline void clear()
 		{
 			data.clear();
 			data.push_front(defaultTapeValue);

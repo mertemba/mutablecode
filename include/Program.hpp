@@ -30,32 +30,32 @@ namespace MutableCode
 			Interpreter(this);
 		}
 		
-		bool getIsRunnable()
+		inline bool getIsRunnable()
 		{
 			return isRunnable;
 		}
 		
-		void setNotRunnable()
+		inline void setNotRunnable()
 		{
 			isRunnable = false;
 		}
 		
-		std::vector<Operation>* getOperations()
+		inline std::vector<Operation>* getOperations()
 		{
 			return &operations;
 		}
 		
-		char getCurrent()
+		inline char getCurrent()
 		{
 			return tape.read();
 		}
 		
-		char getState()
+		inline char getState()
 		{
 			return state;
 		}
 		
-		void setCurrent(char c)
+		inline void setCurrent(char c)
 		{
 			if(c != tape.read())
 			{
@@ -64,7 +64,7 @@ namespace MutableCode
 			}
 		}
 		
-		void setState(char c)
+		inline void setState(char c)
 		{
 			if(state != c)
 			{
@@ -80,14 +80,14 @@ namespace MutableCode
 			return s;
 		}
 		
-		bool popSystemChanged()
+		inline bool popSystemChanged()
 		{
 			bool tmp = systemChanged;
 			systemChanged = false;
 			return tmp;
 		}
 		
-		void move(Move moveCommand)
+		inline void move(Move moveCommand)
 		{
 			switch(moveCommand)
 			{

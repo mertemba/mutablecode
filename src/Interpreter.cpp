@@ -24,38 +24,50 @@ Interpreter::Interpreter(Program* prog)
 void Interpreter::doStep()
 {
 	cout<<*program<<"\t";
-	bool allMatch = false;
+	
+    bool allMatch = false;
 	Operation op;
+    
 	for(std::vector<Operation>::iterator it = operations->begin(); it != operations->end(); it++)
 	{
 		bool currentMatch = false;
 		bool stateMatch = false;
+        
 		op = *it;
+        
 		if(op.currentCondition == 0 || op.currentCondition == program->getCurrent())
 		{
 			currentMatch = true;
 		}
+        
 		if(op.stateCondition == 0 || op.stateCondition == program->getState())
 		{
 			stateMatch = true;
 		}
+        
 		allMatch = currentMatch && stateMatch && !isNop(op);
-		if(allMatch)
+		
+        if(allMatch)
 		{
 			cout<<op<<"\tmatch!"<<endl;
+            
 			if(op.currentWrite != 0)
 			{
 				program->setCurrent(op.currentWrite);
 			}
+            
 			if(op.stateWrite != 0)
 			{
 				program->setState(op.stateWrite);
 			}
-			program->move(op.moveCommand);
-			break;
+            
+            program->move(op.moveCommand);
+			
+            break;
 		}
 	}
-	if(!allMatch)
+    
+    if(!allMatch)
 	{
 		cout<<"no match!\n"<<endl;
 		program->setNotRunnable();

@@ -23,7 +23,7 @@ namespace MutableCode
 	public:
 		Interpreter(Program* prog);
 		
-		bool isNop(Operation op);
+		inline bool isNop(Operation op);
 		
 		void execute();
 	};

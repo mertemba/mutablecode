@@ -31,7 +31,7 @@ int main()
 		operations->push_back(Operation::randomOp());
 	}
 	program.run();
-	cout<<program;
+	cout<<program << endl;
 	
 	return 0;
 }
