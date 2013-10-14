@@ -86,22 +86,23 @@ namespace MutableCode
 		
 		Move moveCommand;
 		
-		void dump()
+		friend std::ostream& operator<<(std::ostream& s, const Operation& op)
 		{
-			std::cout<<"<Operation: "<<(int)currentCondition<<","<<(int)stateCondition<<","<<(int)currentWrite<<","<<(int)stateWrite<<",";
-			switch(moveCommand)
+			s<<"<Operation: "<<(int)op.currentCondition<<","<<(int)op.stateCondition<<","<<(int)op.currentWrite<<","<<(int)op.stateWrite<<",";
+			switch(op.moveCommand)
 			{
 				case gotoLeft:
-					std::cout<<"left";
+					s<<"left";
 					break;
 				case gotoRight:
-					std::cout<<"right";
+					s<<"right";
 					break;
 				default:
-					std::cout<<"stay";
+					s<<"stay";
 					break;
 			}
-			std::cout<<">"<<std::endl;
+			s<<">";
+			return s;
 		}
 	};
 

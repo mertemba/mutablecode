@@ -23,7 +23,7 @@ Interpreter::Interpreter(Program* prog)
 
 void Interpreter::doStep()
 {
-	program->dump();
+	cout<<*program<<"\t";
 	bool allMatch = false;
 	Operation op;
 	for(std::vector<Operation>::iterator it = operations->begin(); it != operations->end(); it++)
@@ -42,8 +42,7 @@ void Interpreter::doStep()
 		allMatch = currentMatch && stateMatch && !isNop(op);
 		if(allMatch)
 		{
-			op.dump();
-			cout<<"match!\n"<<endl;
+			cout<<op<<"\tmatch!"<<endl;
 			if(op.currentWrite != 0)
 			{
 				program->setCurrent(op.currentWrite);

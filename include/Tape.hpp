@@ -78,7 +78,7 @@ namespace MutableCode
 				if(it == t.current)
 					s<<"*";
 			}
-			s<<">"<<std::endl;
+			s<<">";
 			return s;
 		}
 		

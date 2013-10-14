@@ -73,10 +73,11 @@ namespace MutableCode
 			}
 		}
 		
-		void dump()
+		friend std::ostream& operator<<(std::ostream& s, const Program& p)
 		{
-			std::cout<<"Program: state="<<(int)state<<std::endl;
-			std::cout<<"Tape="<<tape;
+			s<<"Program: state="<<(int)p.state<<"\t";
+			s<<"Tape="<<p.tape;
+			return s;
 		}
 		
 		bool popSystemChanged()
