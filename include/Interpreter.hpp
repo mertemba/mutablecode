@@ -13,6 +13,9 @@
 
 #include "Program.hpp"
 
+#include <list>
+#include <sstream>
+
 namespace MutableCode
 {
 
@@ -20,14 +23,22 @@ namespace MutableCode
 	{
 	private:
 		const Program& program;
+		Tape tape;
+		std::istream& input;
+		std::ostringstream output;
 		Program::Code::const_iterator programPointer;
 
-		void doStep();
+		bool doStep();
 
 	public:
-		Interpreter(const Program& program);
+		Interpreter(const Program& program, std::istream& input);
 
-		void run();
+		bool run();
+
+		std::string getOutput()
+		{
+			return output.str();
+		}
 	};
 
 }

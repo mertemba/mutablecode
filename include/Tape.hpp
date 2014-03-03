@@ -15,87 +15,89 @@
 #include <list>
 #include <string>
 
+#include "Char.hpp"
+
 namespace MutableCode
 {
-	
+
 	class Tape
 	{
-	public:
-		constexpr static const char* Charset = "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-";
-		constexpr static char defaultTapeValue = Charset[0];
-	
 	private:
-		std::list<char> data;
-		std::list<char>::iterator current;
-		
+		std::list<Char> data;
+		/// the "current" iterator defines the current position on the tape
+		/// "*current" defines the current char
+		std::list<Char>::iterator current;
+
 	public:
 		Tape()
 		{
-			data.push_front(defaultTapeValue);
+			data.emplace_back();
 			current = data.begin();
 		}
-		
+
 		void moveRight()
 		{
 			if(current != --data.end())
 				++current;
 			else
 			{
-				data.push_back(defaultTapeValue);
+				data.emplace_back();
 				current = --data.end();
 			}
 		}
-		
+
 		void moveLeft()
 		{
 			if(current != data.begin())
 				--current;
 			else
 			{
-				data.push_front(defaultTapeValue);
+				data.emplace_back();
 				current = data.begin();
 			}
 		}
-		
+
+		void increment()
+		{
+			++(*current);
+		}
+
+		void decrement()
+		{
+			--(*current);
+		}
+
 		void write(const char c)
 		{
 			*current = c;
 		}
-		
+
 		char read() const
 		{
-			return *current;
+			return current->toChar();
 		}
-		
+
 		void clear()
 		{
 			data.clear();
-			data.push_front(defaultTapeValue);
+			data.emplace_back();
 			current = data.begin();
 		}
-		
+
 		friend std::ostream& operator<<(std::ostream& s, const Tape& t)
 		{
 			s<<"<Tape:";
-			for(std::list<char>::const_iterator it = t.data.begin(); it!=t.data.end(); it++)
+			for(std::list<Char>::const_iterator it = t.data.begin(); it!=t.data.end(); it++)
 			{
 				s<<" ";
+				/// mark current Char with *c*
 				if(it == t.current)
 					s<<"*";
-				s<<(int)*it;
+				s<<it->toChar();
 				if(it == t.current)
 					s<<"*";
 			}
 			s<<">";
-			return s;
-		}
-		
-		friend std::istream& operator>>(std::istream& s, Tape& t)
-		{
-			int c;
-			s>>c;
-			t.write((char)c);
-			
 			return s;
 		}
 	};

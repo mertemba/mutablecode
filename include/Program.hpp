@@ -39,7 +39,7 @@ namespace MutableCode
 		std::string name;
 
 	public:
-		Program(const std::string& name):name(name)
+		Program(const std::string& name, const Code& code):name(name),code(code)
 		{
 		}
 

@@ -14,20 +14,81 @@
 using namespace MutableCode;
 using namespace std;
 
-Interpreter::Interpreter(const Program& program):program(program)
+Interpreter::Interpreter(const Program& program, std::istream& input)
+	:program(program),input(input)
 {
 	programPointer = program.getCode().begin();
 }
 
-void Interpreter::doStep()
+bool Interpreter::doStep()
 {
-
+	Program::Operation operation = *programPointer;
+	switch(operation)
+	{
+	case Program::ptrIncrement:
+		tape.moveRight();
+		break;
+	case Program::ptrDecrement:
+		tape.moveLeft();
+		break;
+	case Program::charIncrement:
+		tape.increment();
+		break;
+	case Program::charDecrement:
+		tape.decrement();
+		break;
+	case Program::readChar:
+		char c;
+		input>>c;
+		if(input.good())
+		{
+			tape.write(c);
+		}
+		else
+		{
+			/// end of input, break program
+			return false;
+		}
+		break;
+	case Program::writeChar:
+		output<<tape.read();
+		break;
+	case Program::beginWhile:
+		if(tape.read() == '0')
+		{
+			int whileCounter = 1;
+			while(++programPointer != program.getCode().end() && whileCounter>0)
+			{
+				if(*programPointer == Program::beginWhile)
+					++whileCounter;
+				else if(*programPointer == Program::endWhile)
+					--whileCounter;
+			}
+		}
+		break;
+	case Program::endWhile:
+		if(tape.read() != '0')
+		{
+			int whileCounter = 1;
+			while(--programPointer != program.getCode().begin() && whileCounter>0)
+			{
+				if(*programPointer == Program::beginWhile)
+					--whileCounter;
+				else if(*programPointer == Program::endWhile)
+					++whileCounter;
+			}
+		}
+		break;
+	}
+	return true;
 }
 
-void Interpreter::run()
+bool Interpreter::run()
 {
-	for(; programPointer != program.getCode().end(); ++programPointer)
+	bool stopped = true;
+	for(; programPointer != program.getCode().end() && stopped; ++programPointer)
 	{
-		doStep();
+		stopped = doStep();
 	}
+	return stopped;
 }
