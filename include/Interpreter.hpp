@@ -11,30 +11,23 @@
 #ifndef _INTERPRETER_HPP_
 #define _INTERPRETER_HPP_
 
-#include <Operation.hpp>
-
-#include <vector>
+#include "Program.hpp"
 
 namespace MutableCode
 {
-	class Program;
 
 	class Interpreter
 	{
 	private:
-		Program* program;
-		std::vector<Operation>* operations;
-		
+		const Program& program;
+		Program::Code::const_iterator programPointer;
+
 		void doStep();
-		
-		int stepCounter;
-		
+
 	public:
-		Interpreter(Program* prog);
-		
-		inline bool isNop(Operation op);
-		
-		void execute();
+		Interpreter(const Program& program);
+
+		void run();
 	};
 
 }

@@ -11,23 +11,22 @@
 #ifndef _TAPE_HPP_
 #define _TAPE_HPP_
 
-#include <list>
 #include <iostream>
-#include <algorithm>
-
-#include <Operation.hpp>
+#include <list>
+#include <string>
 
 namespace MutableCode
 {
-
-	typedef std::list<char> CharList;
-	const char defaultTapeValue = BasicCharset[0];
 	
 	class Tape
 	{
+	public:
+		constexpr static const char* Charset = "_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-";
+		constexpr static char defaultTapeValue = Charset[0];
+	
 	private:
-		CharList data;
-		CharList::iterator current;
+		std::list<char> data;
+		std::list<char>::iterator current;
 		
 	public:
 		Tape()
@@ -36,10 +35,10 @@ namespace MutableCode
 			current = data.begin();
 		}
 		
-		inline void moveRight()
+		void moveRight()
 		{
 			if(current != --data.end())
-				current++;
+				++current;
 			else
 			{
 				data.push_back(defaultTapeValue);
@@ -47,10 +46,10 @@ namespace MutableCode
 			}
 		}
 		
-		inline void moveLeft()
+		void moveLeft()
 		{
 			if(current != data.begin())
-				current--;
+				--current;
 			else
 			{
 				data.push_front(defaultTapeValue);
@@ -58,17 +57,17 @@ namespace MutableCode
 			}
 		}
 		
-		inline void write(const char c)
+		void write(const char c)
 		{
 			*current = c;
 		}
 		
-		inline char read() const
+		char read() const
 		{
 			return *current;
 		}
 		
-		inline void clear()
+		void clear()
 		{
 			data.clear();
 			data.push_front(defaultTapeValue);
@@ -78,7 +77,7 @@ namespace MutableCode
 		friend std::ostream& operator<<(std::ostream& s, const Tape& t)
 		{
 			s<<"<Tape:";
-			for(CharList::const_iterator it = t.data.begin(); it!=t.data.end(); it++)
+			for(std::list<char>::const_iterator it = t.data.begin(); it!=t.data.end(); it++)
 			{
 				s<<" ";
 				if(it == t.current)

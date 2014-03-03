@@ -11,106 +11,52 @@
 #ifndef _PROGRAM_HPP_
 #define _PROGRAM_HPP_
 
-#include <Tape.hpp>
-#include <Operation.hpp>
-#include <Interpreter.hpp>
-
 #include <vector>
+
+#include "Tape.hpp"
 
 namespace MutableCode
 {
 
 	class Program
 	{
-	private:
-		Tape tape;
-		char state;
-		std::vector<Operation> operations;
-		bool isRunnable;
-		bool systemChanged;
-		
 	public:
-		Program():tape(), state(0), operations(), isRunnable(true), systemChanged(false)
+		enum Operation
+		{
+			ptrIncrement = '>',
+			ptrDecrement = '<',
+			charIncrement = '+',
+			charDecrement = '-',
+			writeChar = '.',
+			readChar = ',',
+			beginWhile = '[',
+			endWhile = ']'
+		};
+		typedef std::vector<Operation> Code;
+
+	private:
+		Code code;
+		std::string name;
+
+	public:
+		Program(const std::string& name):name(name)
 		{
 		}
-		
-		void run()
+
+		const Code& getCode() const
 		{
-			Interpreter(this);
+			return code;
 		}
-		
-		inline bool getIsRunnable()
-		{
-			return isRunnable;
-		}
-		
-		inline void setNotRunnable()
-		{
-			isRunnable = false;
-		}
-		
-		inline std::vector<Operation>* getOperations()
-		{
-			return &operations;
-		}
-		
-		inline char getCurrent()
-		{
-			return tape.read();
-		}
-		
-		inline char getState()
-		{
-			return state;
-		}
-		
-		inline void setCurrent(char c)
-		{
-			if(c != tape.read())
-			{
-				tape.write(c);
-				systemChanged = true;
-			}
-		}
-		
-		inline void setState(char c)
-		{
-			if(state != c)
-			{
-				state = c;
-				systemChanged = true;
-			}
-		}
-		
+
 		friend std::ostream& operator<<(std::ostream& s, const Program& p)
 		{
-			s<<"Program: state="<<(int)p.state<<"\t";
-			s<<"Tape="<<p.tape;
-			return s;
-		}
-		
-		inline bool popSystemChanged()
-		{
-			bool tmp = systemChanged;
-			systemChanged = false;
-			return tmp;
-		}
-		
-		inline void move(Move moveCommand)
-		{
-			switch(moveCommand)
+			s<<"Program '"<<p.name<<"': '";
+			for(Operation op : p.code)
 			{
-				case gotoLeft:
-					tape.moveLeft();
-					systemChanged = true;
-					break;
-				case gotoRight:
-					tape.moveRight();
-					systemChanged = true;
-					break;
-				default:
-					break;
+				s<<(char)op;
 			}
+			s<<"'\n";
+			return s;
 		}
 	};
 

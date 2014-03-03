@@ -7,7 +7,7 @@ CPPFLAGS = -g -I./include -I./src -std=c++11
 LDFLAGS = -g
 LDLIBS = -lstdc++
 
-HEADERS = include/Interpreter.hpp include/Operation.hpp include/Program.hpp include/Tape.hpp
+HEADERS = include/Interpreter.hpp include/Program.hpp include/Tape.hpp
 SRCS = src/main.cpp src/Interpreter.cpp
 BUILDDIR = build
 OBJS_TMP = $(subst .cpp,.o,$(SRCS))

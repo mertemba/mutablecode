@@ -17,7 +17,6 @@ SET(HEADERS
 	${PROJECT_INCLUDE_DIR}/Tape.hpp
 	${PROJECT_INCLUDE_DIR}/Program.hpp
 	${PROJECT_INCLUDE_DIR}/Interpreter.hpp
-	${PROJECT_INCLUDE_DIR}/Operation.hpp
 )
 
 ADD_EXECUTABLE(MutableCode ${SOURCES} ${HEADERS})
