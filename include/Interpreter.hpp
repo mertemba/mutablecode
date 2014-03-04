@@ -27,12 +27,17 @@ namespace MutableCode
 		std::istream& input;
 		std::ostringstream output;
 		Program::Code::const_iterator programPointer;
+		bool verbose;
 
 		bool doStep();
 
 	public:
 		Interpreter(const Program& program, std::istream& input);
 
+		void setVerbose(bool flag)
+		{
+			verbose = flag;
+		}
 		bool run();
 
 		std::string getOutput()

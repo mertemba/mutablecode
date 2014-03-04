@@ -8,8 +8,8 @@
  * Full license text is under the file "LICENSE" provided with this code.
  */
 
-#include <Interpreter.hpp>
-#include <Program.hpp>
+#include "Interpreter.hpp"
+#include "Program.hpp"
 
 using namespace MutableCode;
 
@@ -17,6 +17,7 @@ Interpreter::Interpreter(const Program& program, std::istream& input)
 	:program(program),input(input)
 {
 	programPointer = program.getCode().begin();
+	verbose = false;
 }
 
 bool Interpreter::doStep()
@@ -87,7 +88,13 @@ bool Interpreter::run()
 	bool stopped = true;
 	for(; programPointer != program.getCode().end() && stopped; ++programPointer)
 	{
+		char operation = (char)*programPointer;
 		stopped = doStep();
+		if(verbose)
+		{
+			std::cout<<"Operation: "<<(char)*programPointer<<" ";
+			std::cout<<"Result: "<<tape<<"\n";
+		}
 	}
 	return stopped;
 }

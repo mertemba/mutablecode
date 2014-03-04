@@ -25,9 +25,10 @@ int main(int argc, char *argv[])
 		programLoader.loadCode(std::cin);
 	Program program("Program1", programLoader);
 	std::cout<<program;
-	std::istringstream input("Hallo");
+	std::istringstream input("Input");
 	std::cout<<"Input: '"<<input.str()<<"'.\n";
 	Interpreter interpreter(program, input);
+	interpreter.setVerbose(true);
 	bool stopped = interpreter.run();
 	std::cout<<(stopped?"Program stopped":"Program had too few input")<<".\n";
 	std::cout<<"Output: '"<<interpreter.getOutput()<<"'.\n";

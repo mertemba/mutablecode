@@ -8,7 +8,7 @@
  * Full license text is under the file "LICENSE" provided with this code.
  */
 
-#include <Char.hpp>
+#include "Char.hpp"
 
 using namespace MutableCode;
 
