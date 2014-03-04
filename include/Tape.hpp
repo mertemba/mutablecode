@@ -52,7 +52,7 @@ namespace MutableCode
 				--current;
 			else
 			{
-				data.emplace_back();
+				data.emplace_front();
 				current = data.begin();
 			}
 		}

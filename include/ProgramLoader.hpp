@@ -20,18 +20,24 @@ namespace MutableCode
 
 	class ProgramLoader
 	{
+	protected:
+		Program::Code code;
+
 	public:
 		virtual ~ProgramLoader(){}
-		virtual Program::Code getCode() const = 0;
+		virtual void loadCode(std::istream& stream) = 0;
+		virtual void loadCode(const std::string& string) = 0;
+
+		Program::Code getCode() const
+		{
+			return code;
+		}
 	};
 
 	class BrainfuckProgramLoader : public ProgramLoader
 	{
-	private:
-		Program::Code code;
-
 	public:
-		BrainfuckProgramLoader(std::istream& stream)
+		virtual void loadCode(std::istream& stream) override
 		{
 			char c;
 			stream>>c;
@@ -40,10 +46,10 @@ namespace MutableCode
 				code.push_back((Program::Operation)c);
 			}
 		}
-
-		virtual Program::Code getCode() const
+		virtual void loadCode(const std::string& string) override
 		{
-			return code;
+			std::istringstream stream(string);
+			this->loadCode(stream);
 		}
 	};
 

@@ -16,10 +16,14 @@
 
 using namespace MutableCode;
 
-int main()
+int main(int argc, char *argv[])
 {
-	std::istringstream code("[,.]");
-	Program program("Program1", BrainfuckProgramLoader(code));
+	BrainfuckProgramLoader programLoader;
+	if(argc > 1)
+		programLoader.loadCode(argv[1]);
+	else
+		programLoader.loadCode(std::cin);
+	Program program("Program1", programLoader);
 	std::cout<<program;
 	std::istringstream input("Hallo");
 	std::cout<<"Input: '"<<input.str()<<"'.\n";
