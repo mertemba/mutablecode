@@ -21,6 +21,8 @@ SET(HEADERS
 	${PROJECT_INCLUDE_DIR}/Interpreter.hpp
 	${PROJECT_INCLUDE_DIR}/Char.hpp
 	${PROJECT_INCLUDE_DIR}/ProgramLoader.hpp
+	${PROJECT_INCLUDE_DIR}/Mutator.hpp
+	${PROJECT_INCLUDE_DIR}/Random.hpp
 )
 
 ADD_EXECUTABLE(MutableCode ${SOURCES} ${HEADERS})
