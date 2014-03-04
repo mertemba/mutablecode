@@ -18,6 +18,8 @@ Interpreter::Interpreter(const Program& program, std::istream& input)
 {
 	programPointer = program.getCode().begin();
 	verbose = false;
+	operationCounter = 0;
+	maximumOperationCount = 1000;
 }
 
 bool Interpreter::doStep()
@@ -70,7 +72,7 @@ bool Interpreter::doStep()
 		if(tape.read() != '0')
 		{
 			int whileCounter = 1;
-			while(--programPointer != program.getCode().begin() && whileCounter>0)
+			while(programPointer-- != program.getCode().begin() && whileCounter>0)
 			{
 				if(*programPointer == Program::beginWhile)
 					--whileCounter;
@@ -86,7 +88,8 @@ bool Interpreter::doStep()
 bool Interpreter::run()
 {
 	bool stopped = true;
-	for(; programPointer != program.getCode().end() && stopped; ++programPointer)
+	for(; programPointer != program.getCode().end() && stopped
+		&& (++operationCounter<maximumOperationCount); ++programPointer)
 	{
 		char operation = (char)*programPointer;
 		stopped = doStep();

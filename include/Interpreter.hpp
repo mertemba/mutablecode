@@ -28,6 +28,8 @@ namespace MutableCode
 		std::ostringstream output;
 		Program::Code::const_iterator programPointer;
 		bool verbose;
+		int operationCounter;
+		int maximumOperationCount;
 
 		bool doStep();
 

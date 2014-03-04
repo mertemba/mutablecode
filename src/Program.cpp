@@ -13,6 +13,8 @@
 
 using namespace MutableCode;
 
+Random Program::random(0, 7);
+
 Program::Program(const std::string& name, const ProgramLoader& programLoader)
 	:name(name),code((&programLoader)->getCode())
 {

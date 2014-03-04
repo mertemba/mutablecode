@@ -15,6 +15,8 @@
 #include <list>
 #include <string>
 
+#include "Random.hpp"
+
 namespace MutableCode
 {
 
@@ -25,10 +27,16 @@ namespace MutableCode
 
 	private:
 		int charsetPosition;
+		static Random random;
 
 	public:
 		Char():charsetPosition(0)
 		{
+		}
+
+		static char getRandomChar()
+		{
+			return charset[random.get()];
 		}
 
 		char toChar() const

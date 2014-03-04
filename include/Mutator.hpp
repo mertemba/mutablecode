@@ -17,7 +17,6 @@
 #include "Interpreter.hpp"
 #include "Program.hpp"
 #include "ProgramLoader.hpp"
-#include "Random.hpp"
 
 namespace MutableCode
 {
@@ -40,9 +39,20 @@ namespace MutableCode
 		}
 
 	public:
-		void run()
+		void runRandomProgram()
 		{
-			runProgram("Program1", "[,.]", "Input");
+			Random random(1, 20);
+			std::stringstream code;
+			for(int i = random.get(); i>=0; i--)
+			{
+				code<<(char)Program::getRandomOperation();
+			}
+			std::stringstream input;
+			for(int i = random.get(); i>=0; i--)
+			{
+				input<<Char::getRandomChar();
+			}
+			runProgram("Program1", code.str(), input.str());
 		}
 	};
 

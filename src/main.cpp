@@ -17,6 +17,6 @@ using namespace MutableCode;
 int main(int argc, char *argv[])
 {
 	Mutator mutator;
-	mutator.run();
+	mutator.runRandomProgram();
 	return 0;
 }

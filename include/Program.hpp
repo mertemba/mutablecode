@@ -13,6 +13,7 @@
 
 #include <vector>
 
+#include "Random.hpp"
 #include "Tape.hpp"
 
 namespace MutableCode
@@ -34,12 +35,13 @@ namespace MutableCode
 			endWhile = ']'
 		};
 		typedef std::vector<Operation> Code;
-
 	private:
 		Code code;
 		std::string name;
+		static Random random;
 
 	public:
+
 		Program(const std::string& name, const Code& code):name(name),code(code)
 		{
 		}
@@ -49,6 +51,32 @@ namespace MutableCode
 		const Code& getCode() const
 		{
 			return code;
+		}
+
+		static Operation getRandomOperation()
+		{
+			int operation = random.get();
+			switch(operation)
+			{
+			case 0:
+				return ptrIncrement;
+			case 1:
+				return ptrDecrement;
+			case 2:
+				return charIncrement;
+			case 3:
+				return charDecrement;
+			case 4:
+				return writeChar;
+			case 5:
+				return readChar;
+			case 6:
+				return beginWhile;
+			case 7:
+				return endWhile;
+			default:
+				return charIncrement;
+			}
 		}
 
 		friend std::ostream& operator<<(std::ostream& s, const Program& p)
