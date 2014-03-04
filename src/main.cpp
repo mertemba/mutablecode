@@ -11,19 +11,15 @@
 #include <iostream>
 
 #include "Program.hpp"
+#include "ProgramLoader.hpp"
 #include "Interpreter.hpp"
 
 using namespace MutableCode;
 
 int main()
 {
-	Program::Code code;
-	const char* codeStr = "[,.]";
-	for(const char* c = codeStr; *c != '\0'; c++)
-	{
-		code.push_back((Program::Operation)*c);
-	}
-	Program program("Program1", code);
+	std::istringstream code("[,.]");
+	Program program("Program1", BrainfuckProgramLoader(code));
 	std::cout<<program;
 	std::istringstream input("Hallo");
 	std::cout<<"Input: '"<<input.str()<<"'.\n";

@@ -17,6 +17,7 @@
 
 namespace MutableCode
 {
+	class ProgramLoader;
 
 	class Program
 	{
@@ -42,6 +43,8 @@ namespace MutableCode
 		Program(const std::string& name, const Code& code):name(name),code(code)
 		{
 		}
+
+		Program(const std::string& name, const ProgramLoader& programLoader);
 
 		const Code& getCode() const
 		{

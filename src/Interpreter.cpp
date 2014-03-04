@@ -12,7 +12,6 @@
 #include <Program.hpp>
 
 using namespace MutableCode;
-using namespace std;
 
 Interpreter::Interpreter(const Program& program, std::istream& input)
 	:program(program),input(input)
