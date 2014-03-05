@@ -17,8 +17,9 @@ using namespace MutableCode;
 int main(int argc, char *argv[])
 {
 	Mutator mutator;
-	Mutator::ProgramItem programItem = mutator.runRandomProgram();
-	std::cout<<"Program item: "<<programItem.program<<"\n";
+	mutator.runGeneticProgramming();
+	Mutator::ProgramItem programItem = mutator.getBestProgramItem();
+	std::cout<<"Best program item: "<<programItem.program<<"\n";
 	std::cout<<"Program input: '"<<mutator.getInput()<<"'\n";
 	std::cout<<"Program output: '"<<programItem.output<<"'\n";
 	std::cout<<"Program item score: "<<programItem.score<<"\n";

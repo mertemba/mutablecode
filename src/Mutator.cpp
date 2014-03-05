@@ -8,6 +8,8 @@
  * Full license text is under the file "LICENSE" provided with this code.
  */
 
+#include <algorithm>
+
 #include "Mutator.hpp"
 
 using namespace MutableCode;
@@ -15,11 +17,16 @@ using namespace MutableCode;
 Mutator::Mutator():random(1, 20)
 {
 	inputStr = getRandomInput();
-	populationSize = 50;
 	gpOperationWeighting[copy] = 0.2;
 	gpOperationWeighting[modify] = 0.4;
 	gpOperationWeighting[crossover] = 0.2;
 	gpOperationWeighting[create] = 0.2;
+	populationSize = 50;
+	population.reserve(populationSize);
+	for(int i = 0; i<populationSize; i++)
+	{
+		population.emplace_back(getRandomProgram());
+	}
 }
 
 std::string Mutator::getRandomCode()
@@ -48,6 +55,14 @@ void Mutator::calculateScore(ProgramItem& programItem)
 		-std::log(programItem.program.getCode().size());
 }
 
+Mutator::ProgramItem Mutator::getRandomProgram()
+{
+	BrainfuckProgramLoader programLoader;
+	programLoader.loadCode(getRandomCode());
+	ProgramItem programItem("Program1", programLoader.getCode());
+	return programItem;
+}
+
 void Mutator::runProgram(ProgramItem& programItem)
 {
 	std::istringstream input(inputStr);
@@ -60,11 +75,11 @@ void Mutator::runProgram(ProgramItem& programItem)
 	calculateScore(programItem);
 }
 
-Mutator::ProgramItem Mutator::runRandomProgram()
+void Mutator::runGeneticProgramming()
 {
-	BrainfuckProgramLoader programLoader;
-	programLoader.loadCode(getRandomCode());
-	ProgramItem programItem("Program1", programLoader.getCode());
-	runProgram(programItem);
-	return programItem;
+	for(ProgramItem& programItem : population)
+	{
+		runProgram(programItem);
+	}
+	std::sort(population.begin(), population.end(), ProgramItem::compare);
 }
