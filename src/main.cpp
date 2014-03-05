@@ -17,11 +17,11 @@ using namespace MutableCode;
 int main(int argc, char *argv[])
 {
 	Mutator mutator;
-	mutator.runGeneticProgramming();
+	mutator.runGeneticProgramming(500);
 	Mutator::ProgramItem programItem = mutator.getBestProgramItem();
-	std::cout<<"Best program item: "<<programItem.program<<"\n";
-	std::cout<<"Program input: '"<<mutator.getInput()<<"'\n";
-	std::cout<<"Program output: '"<<programItem.output<<"'\n";
-	std::cout<<"Program item score: "<<programItem.score<<"\n";
+	std::cout<<"\nBest program:\t"<<programItem.program<<"\n";
+	std::cout<<"Program input:\t'"<<mutator.getInput()<<"'\n";
+	std::cout<<"Program output:\t'"<<programItem.output<<"'\n";
+	std::cout<<"Program score:\t"<<programItem.score<<"\n";
 	return 0;
 }

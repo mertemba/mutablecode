@@ -23,6 +23,7 @@ namespace MutableCode
 	{
 	private:
 		const Program& program;
+		const Program::Code& code;
 		Tape tape;
 		std::istream& input;
 		int inputReads;

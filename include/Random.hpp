@@ -20,16 +20,18 @@ namespace MutableCode
 	class Random
 	{
 	private:
+		std::uniform_int_distribution<int> distribution;
+		std::uniform_real_distribution<double> realDistribution;
 		std::default_random_engine randomEngine;
 		std::random_device* randomDevice;
 		bool randomDeviceConstructed;
-		std::uniform_int_distribution<int> distribution;
 
 	public:
-		Random(int min, int max):distribution(min,max),
+		Random(int min, int max):distribution(min,max),realDistribution(0,1),
 			randomEngine(std::chrono::system_clock::now().time_since_epoch().count())
 		{
 			randomDevice = NULL;
+			randomDeviceConstructed = false;
 			try
 			{
 				randomDevice = new std::random_device();
@@ -63,6 +65,13 @@ namespace MutableCode
 				return distribution(*randomDevice);
 			else
 				return distribution(randomEngine);
+		}
+		double getReal()
+		{
+			if(randomDeviceConstructed)
+				return realDistribution(*randomDevice);
+			else
+				return realDistribution(randomEngine);
 		}
 	};
 

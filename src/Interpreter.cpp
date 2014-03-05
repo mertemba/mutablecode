@@ -14,10 +14,10 @@
 using namespace MutableCode;
 
 Interpreter::Interpreter(const Program& program, std::istream& input)
-	:program(program),input(input)
+	:program(program),code(program.getCode()),input(input)
 {
 	inputReads = 0;
-	programPointer = program.getCode().begin();
+	programPointer = code.begin();
 	verbose = false;
 	operationCounter = 0;
 	maximumOperationCount = 1000;
@@ -61,7 +61,7 @@ bool Interpreter::doStep()
 		if(tape.read() == '0')
 		{
 			int whileCounter = 1;
-			while(++programPointer != program.getCode().end() && whileCounter>0)
+			while((++programPointer != code.end()) && whileCounter>0)
 			{
 				if(*programPointer == Program::beginWhile)
 					++whileCounter;
@@ -74,7 +74,7 @@ bool Interpreter::doStep()
 		if(tape.read() != '0')
 		{
 			int whileCounter = 1;
-			while(programPointer-- != program.getCode().begin() && whileCounter>0)
+			while(programPointer-- != code.begin() && whileCounter>0)
 			{
 				if(*programPointer == Program::beginWhile)
 					--whileCounter;
@@ -90,16 +90,17 @@ bool Interpreter::doStep()
 bool Interpreter::run()
 {
 	bool inputBufferUnderrun = false;
-	for(; programPointer != program.getCode().end() && !inputBufferUnderrun
-		&& (++operationCounter<maximumOperationCount); ++programPointer)
+	do
 	{
 		char operation = (char)*programPointer;
 		inputBufferUnderrun = doStep();
 		if(verbose)
 		{
-			std::cout<<"Operation: "<<(char)*programPointer<<" ";
+			std::cout<<"Interpreter: Operation: "<<operation<<" ";
 			std::cout<<"Result: "<<tape<<"\n";
 		}
 	}
+	while((programPointer != code.end()) && (++programPointer != code.end())
+		&& !inputBufferUnderrun && (++operationCounter<maximumOperationCount));
 	return inputBufferUnderrun;
 }

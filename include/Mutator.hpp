@@ -38,8 +38,8 @@ namespace MutableCode
 			double score;
 
 			ProgramItem(const std::string& name, const Program::Code& code)
-				:program(name, code),inputReads(0),score(0),
-				operationCounter(0),inputBufferUnderrun(false){}
+				:program(name, code),inputReads(0),operationCounter(0),
+				inputBufferUnderrun(false),score(0){}
 
 			static bool compare(const ProgramItem& first, const ProgramItem& second)
 			{
@@ -50,8 +50,10 @@ namespace MutableCode
 	private:
 		Random random;
 		std::string inputStr;
-		int populationSize;
+		static const int populationSize;
 		std::vector<ProgramItem> population;
+		int populationCounter;
+		static const int maximumCodeSize;
 
 		/// Genetic Programming options
 		enum GPOperation
@@ -66,16 +68,20 @@ namespace MutableCode
 		std::string getRandomCode();
 		std::string getRandomInput();
 
+		ProgramItem getRandomProgram(const std::string& name);
+		ProgramItem& getRandomExistingProgram();
+
 		static void calculateScore(ProgramItem& programItem);
 
-		ProgramItem getRandomProgram();
-
 		void runProgram(ProgramItem& programItem);
+
+		void nextGeneration(std::vector<ProgramItem>& newPopulation,
+			int programItemIndex);
 
 	public:
 		Mutator();
 
-		void runGeneticProgramming();
+		void runGeneticProgramming(int generations);
 
 		ProgramItem getBestProgramItem()
 		{

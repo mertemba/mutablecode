@@ -36,8 +36,8 @@ namespace MutableCode
 		};
 		typedef std::vector<Operation> Code;
 	private:
-		Code code;
 		std::string name;
+		Code code;
 		static Random random;
 
 	public:
@@ -46,6 +46,10 @@ namespace MutableCode
 		{
 		}
 
+		std::string getName() const
+		{
+			return name;
+		}
 		const Code& getCode() const
 		{
 			return code;

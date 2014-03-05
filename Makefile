@@ -3,7 +3,7 @@
 
 CC = gcc
 CXX = g++
-CPPFLAGS = -g -I./include -I./src -std=c++11
+CPPFLAGS = -g -I./include -I./src -std=c++11 -fopenmp -Wall -O2
 LDFLAGS = -g
 LDLIBS = -lstdc++
 
