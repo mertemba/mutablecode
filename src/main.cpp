@@ -17,6 +17,10 @@ using namespace MutableCode;
 int main(int argc, char *argv[])
 {
 	Mutator mutator;
-	mutator.runRandomProgram();
+	Mutator::ProgramItem programItem = mutator.runRandomProgram();
+	std::cout<<"Program item: "<<programItem.program<<"\n";
+	std::cout<<"Program input: '"<<mutator.getInput()<<"'\n";
+	std::cout<<"Program output: '"<<programItem.output<<"'\n";
+	std::cout<<"Program item score: "<<programItem.score<<"\n";
 	return 0;
 }

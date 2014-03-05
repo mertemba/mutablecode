@@ -46,8 +46,6 @@ namespace MutableCode
 		{
 		}
 
-		Program(const std::string& name, const ProgramLoader& programLoader);
-
 		const Code& getCode() const
 		{
 			return code;
@@ -86,7 +84,7 @@ namespace MutableCode
 			{
 				s<<(char)op;
 			}
-			s<<"'\n";
+			s<<"'";
 			return s;
 		}
 	};

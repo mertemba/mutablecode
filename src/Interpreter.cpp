@@ -16,6 +16,7 @@ using namespace MutableCode;
 Interpreter::Interpreter(const Program& program, std::istream& input)
 	:program(program),input(input)
 {
+	inputReads = 0;
 	programPointer = program.getCode().begin();
 	verbose = false;
 	operationCounter = 0;
@@ -45,11 +46,12 @@ bool Interpreter::doStep()
 		if(input.good())
 		{
 			tape.write(c);
+			++inputReads;
 		}
 		else
 		{
 			/// end of input, break program
-			return false;
+			return true;
 		}
 		break;
 	case Program::writeChar:
@@ -82,22 +84,22 @@ bool Interpreter::doStep()
 		}
 		break;
 	}
-	return true;
+	return false;
 }
 
 bool Interpreter::run()
 {
-	bool stopped = true;
-	for(; programPointer != program.getCode().end() && stopped
+	bool inputBufferUnderrun = false;
+	for(; programPointer != program.getCode().end() && !inputBufferUnderrun
 		&& (++operationCounter<maximumOperationCount); ++programPointer)
 	{
 		char operation = (char)*programPointer;
-		stopped = doStep();
+		inputBufferUnderrun = doStep();
 		if(verbose)
 		{
 			std::cout<<"Operation: "<<(char)*programPointer<<" ";
 			std::cout<<"Result: "<<tape<<"\n";
 		}
 	}
-	return stopped;
+	return inputBufferUnderrun;
 }

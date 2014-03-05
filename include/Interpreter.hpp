@@ -25,12 +25,14 @@ namespace MutableCode
 		const Program& program;
 		Tape tape;
 		std::istream& input;
+		int inputReads;
 		std::ostringstream output;
 		Program::Code::const_iterator programPointer;
 		bool verbose;
 		int operationCounter;
 		int maximumOperationCount;
 
+		/// returns if input buffer underrun occurred
 		bool doStep();
 
 	public:
@@ -40,11 +42,20 @@ namespace MutableCode
 		{
 			verbose = flag;
 		}
+		/// returns if input buffer underrun occurred
 		bool run();
 
+		int getInputReads()
+		{
+			return inputReads;
+		}
 		std::string getOutput()
 		{
 			return output.str();
+		}
+		int getOperationCounter()
+		{
+			return operationCounter;
 		}
 	};
 
