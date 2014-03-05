@@ -14,6 +14,7 @@ SET(SOURCES
 	${PROJECT_SOURCE_DIR}/Program.cpp
 	${PROJECT_SOURCE_DIR}/Interpreter.cpp
 	${PROJECT_SOURCE_DIR}/Char.cpp
+	${PROJECT_SOURCE_DIR}/Mutator.cpp
 )
 SET(HEADERS
 	${PROJECT_INCLUDE_DIR}/Tape.hpp

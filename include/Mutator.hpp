@@ -57,63 +57,17 @@ namespace MutableCode
 		};
 		double gpOperationWeighting[4];
 
-		std::string getRandomCode()
-		{
-			std::stringstream code;
-			for(int i = random.get(); i>=0; i--)
-			{
-				code<<(char)Program::getRandomOperation();
-			}
-			return code.str();
-		}
+		std::string getRandomCode();
+		std::string getRandomInput();
 
-		std::string getRandomInput()
-		{
-			std::stringstream input;
-			for(int i = random.get(); i>=0; i--)
-			{
-				input<<Char::getRandomChar();
-			}
-			return input.str();
-		}
+		static void calculateScore(ProgramItem& programItem);
 
-		static void calculateScore(ProgramItem& programItem)
-		{
-			programItem.score = std::log(programItem.output.size()+1)
-				-std::log(programItem.program.getCode().size());
-		}
-
-		void runProgram(ProgramItem& programItem)
-		{
-			std::istringstream input(inputStr);
-			Interpreter interpreter(programItem.program, input);
-			programItem.inputBufferUnderrun = interpreter.run();
-			programItem.input = inputStr;
-			programItem.inputReads = interpreter.getInputReads();
-			programItem.output = interpreter.getOutput();
-			programItem.operationCounter = interpreter.getOperationCounter();
-			calculateScore(programItem);
-		}
+		void runProgram(ProgramItem& programItem);
 
 	public:
-		Mutator():random(1, 20)
-		{
-			inputStr = getRandomInput();
-			populationSize = 50;
-			gpOperationWeighting[copy] = 0.2;
-			gpOperationWeighting[modify] = 0.4;
-			gpOperationWeighting[crossover] = 0.2;
-			gpOperationWeighting[create] = 0.2;
-		}
+		Mutator();
 
-		ProgramItem runRandomProgram()
-		{
-			BrainfuckProgramLoader programLoader;
-			programLoader.loadCode(getRandomCode());
-			ProgramItem programItem("Program1", programLoader.getCode());
-			runProgram(programItem);
-			return programItem;
-		}
+		ProgramItem runRandomProgram();
 
 		std::string getInput()
 		{

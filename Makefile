@@ -8,7 +8,7 @@ LDFLAGS = -g
 LDLIBS = -lstdc++
 
 HEADERS = include/Interpreter.hpp include/Program.hpp include/Tape.hpp include/Char.hpp include/ProgramLoader.hpp include/Mutator.hpp include/Random.hpp
-SRCS = src/main.cpp src/Interpreter.cpp src/Program.cpp src/Char.cpp
+SRCS = src/main.cpp src/Interpreter.cpp src/Program.cpp src/Char.cpp src/Mutator.cpp
 BUILDDIR = build
 OBJS_TMP = $(subst .cpp,.o,$(SRCS))
 OBJS = $(subst src/,$(BUILDDIR)/,$(OBJS_TMP))
