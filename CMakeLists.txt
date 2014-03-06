@@ -25,6 +25,7 @@ SET(HEADERS
 	${PROJECT_INCLUDE_DIR}/Mutator.hpp
 	${PROJECT_INCLUDE_DIR}/Random.hpp
 	${PROJECT_INCLUDE_DIR}/Evaluator.hpp
+	${PROJECT_INCLUDE_DIR}/Compression.hpp
 )
 
 ADD_EXECUTABLE(MutableCode ${SOURCES} ${HEADERS})
