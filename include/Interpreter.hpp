@@ -11,10 +11,10 @@
 #ifndef _INTERPRETER_HPP_
 #define _INTERPRETER_HPP_
 
-#include "Program.hpp"
-
-#include <list>
 #include <sstream>
+
+#include "Program.hpp"
+#include "Tape.hpp"
 
 namespace MutableCode
 {
@@ -33,7 +33,7 @@ namespace MutableCode
 		int operationCounter;
 		int maximumOperationCount;
 
-		/// returns if input buffer underrun occurred
+		/// returns true if input buffer underrun occurred
 		bool doStep();
 
 	public:
@@ -43,7 +43,7 @@ namespace MutableCode
 		{
 			verbose = flag;
 		}
-		/// returns if input buffer underrun occurred
+		/// returns true if input buffer underrun occurred
 		bool run();
 
 		int getInputReads()

@@ -5,9 +5,9 @@ CC = gcc
 CXX = g++
 CPPFLAGS = -g -I./include -I./src -std=c++11 -fopenmp -Wall -O2
 LDFLAGS = -g
-LDLIBS = -lstdc++
+LDLIBS = -lstdc++ -lgomp
 
-HEADERS = include/Interpreter.hpp include/Program.hpp include/Tape.hpp include/Char.hpp include/ProgramLoader.hpp include/Mutator.hpp include/Random.hpp
+HEADERS = include/Interpreter.hpp include/Program.hpp include/Tape.hpp include/Char.hpp include/ProgramLoader.hpp include/Mutator.hpp include/Random.hpp include/Evaluator.hpp
 SRCS = src/main.cpp src/Interpreter.cpp src/Program.cpp src/Char.cpp src/Mutator.cpp
 BUILDDIR = build
 OBJS_TMP = $(subst .cpp,.o,$(SRCS))
@@ -24,7 +24,7 @@ debugrun: all
 	gdb $(BIN) -ex run -ex quit
 
 $(BIN): $(BUILDDIR)/ $(OBJS)
-	$(CC) $(LDFLAGS) -o $(BIN) $(OBJS) $(LDLIBS)
+	$(CXX) $(LDFLAGS) -o $(BIN) $(OBJS) $(LDLIBS)
 
 $(BUILDDIR)/%.o: src/%.cpp $(HEADERS)
 	$(CXX) -c $(CPPFLAGS) $(CFLAGS) $< -o $@

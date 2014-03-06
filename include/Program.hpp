@@ -11,10 +11,11 @@
 #ifndef _PROGRAM_HPP_
 #define _PROGRAM_HPP_
 
+#include <iostream>
+#include <string>
 #include <vector>
 
 #include "Random.hpp"
-#include "Tape.hpp"
 
 namespace MutableCode
 {
@@ -35,13 +36,13 @@ namespace MutableCode
 			endWhile = ']'
 		};
 		typedef std::vector<Operation> Code;
+
 	private:
 		std::string name;
 		Code code;
 		static Random random;
 
 	public:
-
 		Program(const std::string& name, const Code& code):name(name),code(code)
 		{
 		}
@@ -55,41 +56,30 @@ namespace MutableCode
 			return code;
 		}
 
-		static Operation getRandomOperation()
-		{
-			int operation = random.get();
-			switch(operation)
-			{
-			case 0:
-				return ptrIncrement;
-			case 1:
-				return ptrDecrement;
-			case 2:
-				return charIncrement;
-			case 3:
-				return charDecrement;
-			case 4:
-				return writeChar;
-			case 5:
-				return readChar;
-			case 6:
-				return beginWhile;
-			case 7:
-				return endWhile;
-			default:
-				return charIncrement;
-			}
-		}
+		static Operation getRandomOperation();
 
-		friend std::ostream& operator<<(std::ostream& s, const Program& p)
+		friend std::ostream& operator<<(std::ostream& s, const Program& p);
+
+	};
+
+	/// inputs and results of a tested program
+	struct ProgramItem
+	{
+		Program program;
+		std::string input;
+		int inputReads;
+		std::string output;
+		int operationCounter;
+		bool inputBufferUnderrun;
+		double score;
+
+		ProgramItem(const std::string& name, const Program::Code& code)
+			:program(name, code),inputReads(0),operationCounter(0),
+			inputBufferUnderrun(false),score(0){}
+
+		static bool compare(const ProgramItem& first, const ProgramItem& second)
 		{
-			s<<"Program '"<<p.name<<"': '";
-			for(Operation op : p.code)
-			{
-				s<<(char)op;
-			}
-			s<<"'";
-			return s;
+			return first.score > second.score;
 		}
 	};
 

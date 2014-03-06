@@ -12,6 +12,7 @@
 #define _PROGRAMLOADER_HPP_
 
 #include <sstream>
+#include <string>
 
 #include "Program.hpp"
 

@@ -11,14 +11,16 @@
 #include <iostream>
 
 #include "Mutator.hpp"
+#include "Evaluator.hpp"
 
 using namespace MutableCode;
 
 int main(int argc, char *argv[])
 {
-	Mutator mutator;
+	SimpleEvaluator evaluator;
+	Mutator mutator(&evaluator);
 	mutator.runGeneticProgramming(500);
-	Mutator::ProgramItem programItem = mutator.getBestProgramItem();
+	ProgramItem programItem = mutator.getBestProgramItem();
 	std::cout<<"\nBest program:\t"<<programItem.program<<"\n";
 	std::cout<<"Program input:\t'"<<mutator.getInput()<<"'\n";
 	std::cout<<"Program output:\t'"<<programItem.output<<"'\n";

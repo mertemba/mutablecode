@@ -9,10 +9,15 @@
  */
 
 #include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 
+#include "Char.hpp"
+#include "Evaluator.hpp"
+#include "Interpreter.hpp"
 #include "Mutator.hpp"
+#include "ProgramLoader.hpp"
 
 using namespace MutableCode;
 
@@ -21,7 +26,7 @@ using namespace MutableCode;
 const int Mutator::populationSize = POPULATION_SIZE;
 const int Mutator::maximumCodeSize = 200;
 
-Mutator::Mutator():random(1, 10)
+Mutator::Mutator(Evaluator* evaluator):random(1, 10),evaluator(evaluator)
 {
 	inputStr = getRandomInput();
 	gpOperationWeighting[copy] = 3.0/populationSize;
@@ -58,7 +63,7 @@ std::string Mutator::getRandomInput()
 	return input.str();
 }
 
-Mutator::ProgramItem Mutator::getRandomProgram(const std::string& name)
+ProgramItem Mutator::getRandomProgram(const std::string& name)
 {
 	BrainfuckProgramLoader programLoader;
 	programLoader.loadCode(getRandomCode());
@@ -66,25 +71,11 @@ Mutator::ProgramItem Mutator::getRandomProgram(const std::string& name)
 	return programItem;
 }
 
-Mutator::ProgramItem& Mutator::getRandomExistingProgram()
+ProgramItem& Mutator::getRandomExistingProgram()
 {
 	double r = random.getReal();
 	int index = r*populationSize;
 	return population[index];
-}
-
-void Mutator::calculateScore(ProgramItem& programItem)
-{
-	bool emptyOutputChar = false;
-	if(programItem.output.find('_') != std::string::npos)
-		emptyOutputChar = true;
-	programItem.score =
-		-std::log(programItem.program.getCode().size()+1)/2
-		+std::log(programItem.output.size()+1)
-		+std::log(programItem.inputReads+1)
-		-(programItem.inputBufferUnderrun?2:0)
-		-(emptyOutputChar?1:0)
-	;
 }
 
 void Mutator::runProgram(ProgramItem& programItem)
@@ -96,7 +87,7 @@ void Mutator::runProgram(ProgramItem& programItem)
 	programItem.inputReads = interpreter.getInputReads();
 	programItem.output = interpreter.getOutput();
 	programItem.operationCounter = interpreter.getOperationCounter();
-	calculateScore(programItem);
+	evaluator->calculateScore(programItem);
 }
 
 void Mutator::nextGeneration(std::vector<ProgramItem>& newPopulation,
@@ -106,6 +97,7 @@ void Mutator::nextGeneration(std::vector<ProgramItem>& newPopulation,
 	programItemIndex -= populationSize*gpOperationWeighting[copy];
 	if(programItemIndex < 0)
 	{
+		/// already copied, nothing to do
 		return;
 	}
 	programItemIndex -= populationSize*gpOperationWeighting[modify];
