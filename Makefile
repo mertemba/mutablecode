@@ -5,9 +5,9 @@ CC = gcc
 CXX = g++
 CPPFLAGS = -g -I./include -I./src -std=c++11 -fopenmp -Wall -O2
 LDFLAGS = -g
-LDLIBS = -lstdc++ -lgomp
+LDLIBS = -lstdc++ -lgomp -lz
 
-HEADERS = include/Interpreter.hpp include/Program.hpp include/Tape.hpp include/Char.hpp include/ProgramLoader.hpp include/Mutator.hpp include/Random.hpp include/Evaluator.hpp include/Compression.hpp
+HEADERS = include/Interpreter.hpp include/Program.hpp include/Tape.hpp include/Char.hpp include/ProgramLoader.hpp include/Mutator.hpp include/Random.hpp include/Evaluator.hpp include/Compression.hpp include/EntropyEvaluator.hpp
 SRCS = src/main.cpp src/Interpreter.cpp src/Program.cpp src/Char.cpp src/Mutator.cpp
 BUILDDIR = build
 OBJS_TMP = $(subst .cpp,.o,$(SRCS))

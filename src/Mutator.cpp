@@ -24,9 +24,9 @@ using namespace MutableCode;
 #define POPULATION_SIZE 100
 
 const int Mutator::populationSize = POPULATION_SIZE;
-const int Mutator::maximumCodeSize = 200;
+const int Mutator::maximumCodeSize = 100;
 
-Mutator::Mutator(Evaluator* evaluator):random(1, 10),evaluator(evaluator)
+Mutator::Mutator(Evaluator* evaluator):random(1, 20),evaluator(evaluator)
 {
 	inputStr = getRandomInput();
 	gpOperationWeighting[copy] = 3.0/populationSize;
@@ -122,7 +122,7 @@ void Mutator::nextGeneration(std::vector<ProgramItem>& newPopulation,
 				code.erase(code.begin()+(int)(code.size()*r));
 				changed--;
 			}
-			for(int i = random.get()/2; i>=0; i--)
+			for(int i = random.get(); i>=0; i--)
 			{
 				double r = random.getReal();
 				code.insert(code.begin()+(int)(code.size()*r),
@@ -198,7 +198,7 @@ void Mutator::runGeneticProgramming(int generations)
 	for(int j = 0; j<populationSize && j<10; j++)
 	{
 		ProgramItem& programItem = population[j];
-		std::cout<<"Score: "<<programItem.score<<"   \t";
+		std::cout<<"Score: "<<programItem.score<<"  \t";
 		std::cout<<programItem.program<<"\n";
 	}
 }

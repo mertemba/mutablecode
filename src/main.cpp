@@ -11,15 +11,15 @@
 #include <iostream>
 
 #include "Mutator.hpp"
-#include "Evaluator.hpp"
+#include "EntropyEvaluator.hpp"
 
 using namespace MutableCode;
 
 int main(int argc, char *argv[])
 {
-	SimpleEvaluator evaluator;
+	EntropyEvaluator evaluator;
 	Mutator mutator(&evaluator);
-	mutator.runGeneticProgramming(500);
+	mutator.runGeneticProgramming(200);
 	ProgramItem programItem = mutator.getBestProgramItem();
 	std::cout<<"\nBest program:\t"<<programItem.program<<"\n";
 	std::cout<<"Program input:\t'"<<mutator.getInput()<<"'\n";
