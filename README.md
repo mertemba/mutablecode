@@ -26,3 +26,7 @@ Full license text is under the file "LICENSE" provided with this code.
 The contents of "include/Compression.hpp" are an unchanged part of a code snippet
 released by Timo Bingmann under the Boost Software License, Version 1.0
 (see http://www.boost.org/LICENSE_1_0.txt).
+
+The contents of "include/LevenshteinDistance.hpp" are an unchanged code snippet
+released by Wikibooks under the Creative Commons Attribution/Share-Alike License
+(see http://creativecommons.org/licenses/by-sa/3.0/).
