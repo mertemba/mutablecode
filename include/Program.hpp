@@ -81,6 +81,9 @@ namespace MutableCode
 		{
 			return first.score > second.score;
 		}
+
+		bool operator==(const Program::Code& code) const;
+
 	};
 
 }

@@ -30,8 +30,8 @@ Mutator::Mutator(Evaluator* evaluator):random(1, 20),evaluator(evaluator)
 {
 	inputStr = getRandomInput();
 	gpOperationWeighting[copy] = 3.0/populationSize;
-	gpOperationWeighting[modify] = 0.7-gpOperationWeighting[copy];
-	gpOperationWeighting[crossover] = 0.1;
+	gpOperationWeighting[modify] = 0.4-gpOperationWeighting[copy];
+	gpOperationWeighting[crossover] = 0.4;
 	gpOperationWeighting[create] = 0.2;
 	populationCounter = 0;
 	population.reserve(populationSize);
@@ -93,77 +93,92 @@ void Mutator::runProgram(ProgramItem& programItem)
 void Mutator::nextGeneration(std::vector<ProgramItem>& newPopulation,
 	int programItemIndex)
 {
+	Program::Code code;
 	ProgramItem& programItem = newPopulation[programItemIndex];
-	programItemIndex -= populationSize*gpOperationWeighting[copy];
-	if(programItemIndex < 0)
+	do
 	{
-		/// already copied, nothing to do
-		return;
-	}
-	programItemIndex -= populationSize*gpOperationWeighting[modify];
-	if(programItemIndex < 0)
-	{
-		ProgramItem& programItem2 = getRandomExistingProgram();
-		std::stringstream name;
-		name<<"Program"<<(++populationCounter);
-		Program::Code code = programItem2.program.getCode();
-		int changed = random.get()+10;
-		do
+		double relativePosition = programItemIndex*1.0/populationSize;
+		relativePosition -= gpOperationWeighting[copy];
+		if(relativePosition < 0)
 		{
-			for(int i = random.get(); i>=0; i--)
-			{
-				double r = random.getReal();
-				code[(int)(code.size()*r)] = Program::getRandomOperation();
-				changed--;
-			}
-			for(int i = random.get(); i>=0 && !code.empty(); i--)
-			{
-				double r = random.getReal();
-				code.erase(code.begin()+(int)(code.size()*r));
-				changed--;
-			}
-			for(int i = random.get(); i>=0; i--)
-			{
-				double r = random.getReal();
-				code.insert(code.begin()+(int)(code.size()*r),
-					Program::getRandomOperation());
-				changed--;
-			}
+			/// already copied, nothing to do
+			code = programItem.program.getCode();
+			goto finish;
 		}
-		while(changed > 0);
-		if(code.size()>maximumCodeSize)
-			code.erase(code.begin()+maximumCodeSize, code.end());
-		programItem = ProgramItem(name.str(), code);
-		return;
+		relativePosition -= gpOperationWeighting[modify];
+		if(relativePosition < 0)
+		{
+			ProgramItem& programItem2 = getRandomExistingProgram();
+			std::stringstream name;
+			name<<"Program"<<(++populationCounter);
+			code = programItem2.program.getCode();
+			int changed = random.get()+10;
+			do
+			{
+				for(int i = random.get(); i>=0; i--)
+				{
+					double r = random.getReal();
+					code[(int)(code.size()*r)] = Program::getRandomOperation();
+					changed--;
+				}
+				for(int i = random.get(); i>=0 && !code.empty(); i--)
+				{
+					double r = random.getReal();
+					code.erase(code.begin()+(int)(code.size()*r));
+					changed--;
+				}
+				for(int i = random.get(); i>=0; i--)
+				{
+					double r = random.getReal();
+					code.insert(code.begin()+(int)(code.size()*r),
+						Program::getRandomOperation());
+					changed--;
+				}
+			}
+			while(changed > 0);
+			if(code.size()>maximumCodeSize)
+				code.erase(code.begin()+maximumCodeSize, code.end());
+			programItem = ProgramItem(name.str(), code);
+			goto finish;
+		}
+		relativePosition -= gpOperationWeighting[crossover];
+		if(relativePosition < 0)
+		{
+			ProgramItem& programItem2 = getRandomExistingProgram();
+			std::stringstream name;
+			name<<"Program"<<(++populationCounter);
+			code = programItem.program.getCode();
+			const Program::Code& code2 = programItem2.program.getCode();
+			int minLength = std::min(code.size(), code2.size());
+			double r = random.getReal();
+			r = std::min(r, 0.65);
+			r = std::max(r, 0.35);
+			int mid = (int)(r*minLength);
+			code.erase(code.begin()+mid, code.end());
+			code.insert(code.begin()+mid, code2.begin()+mid, code2.end());
+			if(code.size()>maximumCodeSize)
+				code.erase(code.begin()+maximumCodeSize, code.end());
+			programItem = ProgramItem(name.str(), code);
+			goto finish;
+		}
+		relativePosition -= gpOperationWeighting[create];
+		/// if(relativePosition < 0) should not be necessary
+		{
+			std::stringstream name;
+			name<<"Program"<<(++populationCounter);
+			programItem = getRandomProgram(name.str());
+			code = programItem.program.getCode();
+			goto finish;
+		}
+	finish:
+		std::vector<ProgramItem>::const_iterator it =
+			std::find(newPopulation.begin(), newPopulation.end(), code);
+		if(it == newPopulation.begin()+programItemIndex)
+			it = std::find(newPopulation.begin()+programItemIndex+1, newPopulation.end(), code);
+		if(it == newPopulation.end())
+			break;
 	}
-	programItemIndex -= populationSize*gpOperationWeighting[crossover];
-	if(programItemIndex < 0)
-	{
-		ProgramItem& programItem2 = getRandomExistingProgram();
-		std::stringstream name;
-		name<<"Program"<<(++populationCounter);
-		Program::Code code = programItem.program.getCode();
-		const Program::Code& code2 = programItem2.program.getCode();
-		int minLength = std::min(code.size(), code2.size());
-		double r = random.getReal();
-		r = std::min(r, 0.65);
-		r = std::max(r, 0.35);
-		int mid = (int)(r*minLength);
-		code.erase(code.begin()+mid, code.end());
-		code.insert(code.begin()+mid, code2.begin()+mid, code2.end());
-		if(code.size()>maximumCodeSize)
-			code.erase(code.begin()+maximumCodeSize, code.end());
-		programItem = ProgramItem(name.str(), code);
-		return;
-	}
-	programItemIndex -= populationSize*gpOperationWeighting[create];
-	if(programItemIndex < 0)
-	{
-		std::stringstream name;
-		name<<"Program"<<(++populationCounter);
-		programItem = getRandomProgram(name.str());
-		return;
-	}
+	while(true);
 }
 
 void Mutator::runGeneticProgramming(int generations)

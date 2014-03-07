@@ -53,3 +53,8 @@ namespace MutableCode
 		return s;
 	}
 }
+
+bool ProgramItem::operator==(const Program::Code& code) const
+{
+	return code == program.getCode();
+}
