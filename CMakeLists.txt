@@ -28,6 +28,7 @@ set(HEADERS
 	${PROJECT_INCLUDE_DIR}/Compression.hpp
 	${PROJECT_INCLUDE_DIR}/EntropyEvaluator.hpp
 	${PROJECT_INCLUDE_DIR}/LevenshteinDistance.hpp
+	${PROJECT_INCLUDE_DIR}/StringEvaluator.hpp
 )
 
 add_executable(MutableCode ${SOURCES} ${HEADERS})

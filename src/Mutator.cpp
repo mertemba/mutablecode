@@ -21,18 +21,18 @@
 
 using namespace MutableCode;
 
-#define POPULATION_SIZE 100
+#define POPULATION_SIZE 30
 
 const int Mutator::populationSize = POPULATION_SIZE;
-const int Mutator::maximumCodeSize = 100;
+const int Mutator::maximumCodeSize = 200;
 
-Mutator::Mutator(Evaluator* evaluator):random(1, 20),evaluator(evaluator)
+Mutator::Mutator(Evaluator* evaluator):random(1, 30),evaluator(evaluator)
 {
 	inputStr = getRandomInput();
 	gpOperationWeighting[copy] = 3.0/populationSize;
-	gpOperationWeighting[modify] = 0.4-gpOperationWeighting[copy];
-	gpOperationWeighting[crossover] = 0.4;
-	gpOperationWeighting[create] = 0.2;
+	gpOperationWeighting[modify] = 0.5-gpOperationWeighting[copy];
+	gpOperationWeighting[crossover] = 0.1;
+	gpOperationWeighting[create] = 0.4;
 	populationCounter = 0;
 	population.reserve(populationSize);
 	for(int i = 0; i<populationSize; i++)
